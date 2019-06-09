@@ -1,0 +1,16 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}Invalid activation URL{% endblock %}</h3>
+<hr />
+	<p>This verification URL may have been used already, may be expired, or may be invalid.</p>
+	<br />
+	<p>Error details: <br />
+	User id: {{ uid }} <br />
+	Token: {{ token }}</p>
+	<p>For security reasons, this page is generic and we can't provide additional information here.</p>
+{% endblock %}

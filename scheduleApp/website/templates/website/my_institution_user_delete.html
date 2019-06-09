@@ -1,0 +1,29 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}Delete user{% endblock %}</h3>
+<hr />
+<div class="row">
+	<div class="col-sm-8">
+	<h4>{{ target_user }}</h4>
+	<p>{{ target_user.email }} <span class="badge badge-{% if target_user.isEmailConfirmed %}success{% else %}warning{% endif %}">{% if target_user.isEmailConfirmed %}Confirmed{% else %}Unconfirmed{% endif %}</span><br />
+	{% if target_user.userType == 1 %}Teacher{% else %}Student{% endif %}<br />
+	Last login: {{ target_user.last_login }}</p>
+	{% if not target_user.is_active %}<strong> - This user account is disabled -</strong><br />{% endif %}
+	<br />
+	<div class="alert alert-danger" role="alert">
+		<p><strong>Important!</strong> Deleting this user account will delete all associated data, including appointment data and settings. Are you sure you want to proceed?</p>
+		<p><i>If this a temporary restriction on the user's account, <a href="{% url 'website:myinstitutionedit' target_user.pk %}">edit the user account instead</a> and set it to <strong>inactive</strong>.</i></p>
+	</div>
+	<form method="post">
+	{% csrf_token %}
+	{% crispy form %}
+	</form>
+	</div>
+</div>
+
+{% endblock %}

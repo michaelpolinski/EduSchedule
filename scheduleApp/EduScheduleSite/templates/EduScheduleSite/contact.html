@@ -1,0 +1,67 @@
+{% extends "EduScheduleSite/base.html" %}
+{% load static %}
+{% load compress %}
+{% block title %}Contact - EduSchedule{% endblock %}
+{% block desc %}Questions? Get in touch with the developers of EduSchedule.{% endblock %}
+{% block content %}
+{% compress css inline %}
+<style type="text/css">
+#content {
+	padding-top:30px;
+}
+</style>
+{% endcompress %}
+<div class="container" id="content">
+		<h2>Contact</h2>
+		<hr /><br />
+		<h3>The EduSchedule developers</h3>
+		<br />
+		<div class="row">
+			<div class="col-md-4">
+		        <div class="card shadow-sm">
+		        	<div class="card-body">
+		        	<h3>Michael Polinski</h3>
+		        	<h6>Lead developer</h6>
+		        	<hr />
+		        	<a href="https://www.linkedin.com/in/michaelpolinski/">
+		        	<img src="{% static "EduScheduleSite/img/li.svg" %}" width="30" height="30" alt="Linked_In">
+		        	</a><span>  </span>
+		        	<a href="https://github.com/michaelpolinski/">
+		        	<img src="{% static "EduScheduleSite/img/gh.svg" %}" width="30" height="30" alt="GitHub">
+		        	</a>
+		        	</div>
+		        </div>
+		        <br />
+	        </div>
+	        <div class="col-md-4">
+		        <div class="card shadow-sm">
+		        	<div class="card-body">
+		        	<h3>Thomas Accardo</h3>
+		        	<h6>Front-end developer</h6>
+		        	<hr />
+		        	<a href="https://www.linkedin.com/in/thomas-accardo/">
+		        	<img src="{% static "EduScheduleSite/img/li.svg" %}" width="30" height="30" alt="Linked_In">
+		        	</a>
+		        	</div>
+		        </div>
+		        <br />
+	        </div>
+	        <div class="col-md-4">
+		        <div class="card shadow-sm">
+		        	<div class="card-body">
+		        	<h3>Daniel Hamill</h3>
+		        	<h6>Front-end developer</h6>
+		        	<hr />
+		        	<a href="https://www.linkedin.com/in/daniel-hamill/">
+		        	<img src="{% static "EduScheduleSite/img/li.svg" %}" width="30" height="30" alt="Linked_In">
+		        	</a>
+		        	</div>
+		        </div>
+		        <br />
+	        </div>
+        </div>
+        <br />
+        For questions regarding the EduSchedule service or software, please contact Michael by email: <img src="{% static "EduScheduleSite/img/eml.png" %}" height="18">
+        <br /><br />
+</div>
+{% endblock %}

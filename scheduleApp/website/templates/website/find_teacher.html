@@ -1,0 +1,37 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}Find a teacher{% endblock %}</h3>
+<hr />
+<div class="row">
+	<div class="col-sm col-border">
+	<p>Search for a teacher below by first name, last name, or full name.</p>
+	<form method="post">
+	{% crispy form %}		
+	</form>
+	</div>
+	<div class="col-sm col-border">
+	{% if empty %}
+	<h4>Search Results</h4>
+	<p>No teachers at your institution matched your search.</p>
+	{% endif %}
+	{% if results %}
+	<h4>Search Results</h4>
+	{% for teacher in results %}
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">{{ teacher }}</h5>
+				<a href="{% url 'website:newappointment' teacher.pk %}" class="card-link">Continue &gt;</a>
+  			</div>
+		</div>
+		<br />
+	{% endfor %}
+	{% endif %}
+	</div>
+</div>
+
+{% endblock %}

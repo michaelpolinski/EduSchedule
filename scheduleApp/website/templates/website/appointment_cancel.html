@@ -1,0 +1,18 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}Cancel appointment{% endblock %}</h3>
+<hr />
+<div class="alert alert-danger" role="alert">
+	Are you sure you want to cancel your appointment with {% if usertype == 1 %}{{ appointment.student }}{% else %}{{ appointment.teacher }}{% endif %} on {{ appointment.startTime|date:"n/d/Y" }}?
+</div>
+<form method="post">
+	{% crispy form %}
+</form>
+
+{% endblock %}

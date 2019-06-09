@@ -1,0 +1,65 @@
+{% extends "EduScheduleSite/base.html" %}
+{% block title %}EduSchedule - simple, modern appointment management for schools{% endblock %}
+{% block desc %}EduSchedule is a simple and modern web app that helps students and teachers manage appointments efficiently. Try EduSchedule at your school today!{% endblock %}
+{% block content %}
+  <div class="jumbotron noise">
+    <div class="container">
+      <h1 class="display-4">EduSchedule</h1>
+      <h4>a simple and modern web app that helps students and teachers manage appointments efficiently</h4>
+      <br />
+      <a class="btn btn-primary btn-lg" href="{% url 'website:homepage' %}" role="button">Get started &raquo;</a>
+    </div>
+  </div>
+  <div class="container">
+  <h2>Why EduSchedule?</h2>
+    <hr /><br />
+    <div class="row">
+      <div class="col-md-4">
+      <div class="card shadow-sm">
+      <div class="card-body">
+        <h3>
+        <svg id="i-lightning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    		<path d="M18 13 L26 2 8 13 14 19 6 30 24 19 Z" />
+		</svg>
+        Simple
+        </h3>
+        <p>EduSchedule is designed to be simple, modern, and fast without sacrificing usability. Registration requires only an email address.</p>
+      </div>
+      </div>
+      <br />
+      </div>
+      <div class="col-md-4">
+      	<div class="card shadow-sm">
+      	<div class="card-body">
+        <h3>
+        <svg id="i-options" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    		<path d="M28 6 L4 6 M28 16 L4 16 M28 26 L4 26 M24 3 L24 9 M8 13 L8 19 M20 23 L20 29" />
+		</svg>
+        Flexible
+        </h3>
+        <p>Institutions can register for EduSchedule quickly on {{ domain }} or run the software on their servers.</p>
+        </div>
+        </div>
+        <br />
+      </div>
+      <div class="col-md-4">
+      <div class="card shadow-sm">
+      <div class="card-body">
+        <h3>
+        <svg id="i-code" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    		<path d="M10 9 L3 17 10 25 M22 9 L29 17 22 25 M18 7 L14 27" />
+		</svg>
+		Open source
+		</h3>
+        <p>EduSchedule is open-source and freely licensed under the GNU GPL. Check out the code <a href="https://github.com/michaelpolinski/EduSchedule">here</a> - pull requests welcome.</p>
+        </div>
+        </div>
+        <br />
+      </div>
+    </div>
+    <br /><br />
+    <a href="{% url 'EduScheduleSite:about' %}" class="btn btn-secondary">Learn more &raquo;</a>
+    <a href="{% url 'EduScheduleSite:contact' %}" class="btn btn-secondary">Contact the developers &raquo;</a>
+    <br /><br />
+  </div>
+{% endblock %}

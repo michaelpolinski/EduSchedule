@@ -1,0 +1,101 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% compress css inline %}
+<style type="text/css">
+.clear-form {
+	margin-bottom: 0px;
+}
+</style>
+{% endcompress %}
+
+<h3>{% block title %}My Appointments{% endblock %}</h3>
+<hr />
+{% if message %}
+<div class="alert alert-success" role="alert">
+	{% if message == 'edit_success' %}
+	Your changes were saved.
+	{% endif %}
+	{% if message == 'create_success' %}
+	An appointment has been successfully requested.
+	{% endif %}
+	{% if message == 'cancel_success' %}
+	The appointment has been cancelled.
+	{% endif %}
+	{% if message == 'approve_success' %}
+	The appointment details were confirmed.
+	{% endif %}
+</div>
+<br />
+{% endif %}
+{% if appointments %}
+	{% for a in appointments %}
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md col-border">
+						Meeting with
+						<br />
+						<h5>{% if usertype == 1 %}{{ a.student }}{% else %}{{ a.teacher }}{% endif %}</h5>
+						{% if a.cancelled %}
+							<span class="badge badge-danger">Cancelled</span>
+						{% else %}
+							<span class="badge badge-{% if usertype == 1 %}{% if a.teacherConfirmed %}{% if a.studentConfirmed %}success{% else %}warning{% endif %}{% else %}danger{% endif %}{% else %}{% if a.studentConfirmed %}{% if a.teacherConfirmed %}success{% else %}warning{% endif %}{% else %}danger{% endif %}{% endif %}">
+								{% if usertype == 1 %}{% if a.teacherConfirmed %}{% if a.studentConfirmed %}Confirmed{% else %}Pending{% endif %}{% else %}Unconfirmed{% endif %}{% else %}{% if a.studentConfirmed %}{% if a.teacherConfirmed %}Confirmed{% else %}Pending{% endif %}{% else %}Unconfirmed{% endif %}{% endif %}
+							</span>
+						{% endif %}
+						<div class="d-block d-md-none"><hr /></div>
+					</div>
+					<div class="col-md col-border">
+						{{ a.startTime|date:"D n/d/Y" }}
+						<br />
+						{{ a.startTime|time:"g:i A" }} to {{ a.endTime|time:"g:i A" }}
+						{% if usertype == 1 %}{% if a.previousStartTime and not a.teacherConfirmed %}<br /><span class="badge badge-info">Updated</span>{% endif %}{% else %}{% if a.previousStartTime and not a.studentConfirmed %}<br /><span class="badge badge-info">Updated</span>{% endif %}{% endif %} {% if forloop.counter0 in overlapping_indices and not a.cancelled %}<span class="badge badge-warning">Overlapping</span>{% endif %}
+						<div class="d-block d-md-none"><hr /></div>
+					</div>
+					<div class="col-md col-border">
+						Location:
+						<br />
+						{{ a.location }}
+						{% if usertype == 2 and not a.studentConfirmed and a.previousLocation %}
+						<br />
+						<span class="badge badge-info">Updated</span>
+						{% endif %}
+						<div class="d-block d-md-none"><hr /></div>
+					</div>
+					<div class="col-md col-border">
+						{% if usertype == 1 and not a.teacherConfirmed and not a.cancelled or usertype == 2 and not a.studentConfirmed and not a.cancelled %}
+						<form class="d-flex h-100 justify-content-center" action="{% url 'website:appointmentapprove' a.pk %}" method="post">
+						{% csrf_token %}
+						{% else %}
+						<div class="d-flex h-100 justify-content-center">
+						{% endif %}
+						<div class="btn-group align-self-center" role="group" aria-label="Action buttons">
+							{% if usertype == 1 and not a.teacherConfirmed and not a.cancelled or usertype == 2 and not a.studentConfirmed and not a.cancelled %}
+							<button type="submit" class="btn btn-success">Confirm</button>
+							{% endif %}
+							<a href="{% url 'website:appointmentedit' a.pk %}" class="btn btn-primary">Edit</a>
+							{% if not a.cancelled %}
+	 						<a href="{% url 'website:appointmentcancel' a.pk %}" class="btn btn-danger">Cancel</a>
+	 						{% endif %}
+						</div>
+						{% if usertype == 1 and not a.teacherConfirmed and not a.cancelled or usertype == 2 and not a.studentConfirmed and not a.cancelled %}
+	  					</form>
+	  					{% else %}
+	  					</div>
+	  					{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+	{% endfor %}
+{% else %}
+<p>There are no appointments to display.</p>
+{% endif %}
+{% endblock %}

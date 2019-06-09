@@ -1,0 +1,30 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% compress css inline %}
+<style type="text/css">
+.invalid-feedback {
+	display:block;
+}
+</style>
+{% endcompress %}
+
+<h3>{% block title %}Edit user{% endblock %}</h3>
+<hr />
+<div class="row">
+	<div class="col-sm-8">
+	<h4>{{ target_user }}</h4>
+	<p>{{ target_user.email }} <span class="badge badge-{% if target_user.isEmailConfirmed %}success{% else %}warning{% endif %}">{% if target_user.isEmailConfirmed %}Confirmed{% else %}Unconfirmed{% endif %}</span><br />
+	{% if target_user.userType == 1 %}Teacher{% else %}Student{% endif %}<br />
+	Last login: {{ target_user.last_login }}</p>
+	<form method="post">
+	{% crispy form %}
+	</form>
+	</div>
+</div>
+
+{% endblock %}

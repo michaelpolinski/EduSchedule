@@ -1,0 +1,33 @@
+{% extends "EduScheduleSite/base.html" %}
+{% load static %}
+{% load compress %}
+{% block title %}About - EduSchedule{% endblock %}
+{% block desc %}EduSchedule was created by three students. Learn more about the project!{% endblock %}
+{% block content %}
+{% compress css inline %}
+<style type="text/css">
+#content {
+	padding-top:30px;
+}
+</style>
+{% endcompress %}
+<div class="container" id="content">
+		<h2>About EduSchedule</h2>
+		<hr />
+		<p>
+		The idea for EduSchedule was born when three seniors at Glenbrook South High School - Michael, Thomas, and Daniel - realized the inefficiency involved in scheduling meetings with their teachers.
+		They had all experienced the cumbersome process of email exchanges or Google Calendar appointments while trying to coordinate a meeting with a teacher.
+		Brainstorming ideas, they also learned that teachers, counselors, and tutors faced the same issues.
+		EduSchedule, a simple and modern web app for managing appointments, is the solution they came up with.
+		</p>
+		<p>
+		EduSchedule features a simple sign-up process with an equally simple process for registering an institution.
+		The application includes an easy-to-use appointment booking and management interface, providing options to edit and cancel appointments.
+		Users receive notifications and can customize them based on their preferences.
+		And, for institution administrators, EduSchedule integrates easily with existing technology, requiring only an email address for end-user registration.
+		</p>
+		<p>
+		The software is open source and freely-licensed under the GNU GPLv3. The code is available at <a href="https://github.com/michaelpolinski/EduSchedule">https://github.com/michaelpolinski/EduSchedule</a>.
+		</p>
+</div>
+{% endblock %}

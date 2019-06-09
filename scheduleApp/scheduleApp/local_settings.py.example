@@ -1,0 +1,53 @@
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+#===============================================================================================#
+# Environment variables are contained in this file. Don't copy it to other machines/workspaces. #
+#===============================================================================================#
+
+
+# Unique secret key generated using the following code:
+# >>> import random
+# >>> ''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50))
+SECRET_KEY = 'PUT_SECRET_KEY_HERE'
+
+# Django debug mode. Use true for development/testing environments, but set to False for production (security risk!).
+DEBUG = False
+
+# Django database config (sqlite for testing)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+# Example Postgres configuration (use for production)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'eduschedule',
+        'USER': 'es_user',
+        'PASSWORD': 'PUT_DB_PASSWORD_HERE',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+# Django email backend (file-based for testing)
+# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+# Example SMTP email configuration (use for production)
+DEFAULT_FROM_EMAIL = "PUT_NOREPLY_EMAIL_ADDRESS_HERE"
+# Assuming email server is listening on localhost:25 with no username/password auth
+# (be sure to protect this email server by only allowing incoming connections from localhost)
+
+# tells Django on which domains the application should be served (do not use localhost in production!)
+ALLOWED_HOSTS = ['PUT_FQDN_HERE']
+# tells Django to trust to upstream proxy server (eg. nginx) with whether a request is secure. Uncomment if reverse proxy is trusted.
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# location at which manage.py collectstatic will place files (web server should serve these directly)
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'staticfiles/')

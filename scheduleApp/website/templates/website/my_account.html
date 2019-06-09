@@ -1,0 +1,57 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}My Account{% endblock %}</h3>
+<hr />
+<div class="card">
+	<center>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item"><strong>{{ email }}</strong></li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-sm-6 col-border">
+						<strong>{{ usertype_friendly }}</strong>
+					</div>
+					<div class="col-sm-6 col-border">
+						<strong>{{ institution.name }}</strong>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</center>
+</div>
+<br />
+<br />
+<div class="row">
+	<div class="col-sm-8 col-border">
+		<h4>Personal information</h4>
+		{% if success %}
+		<div class="alert alert-success" role="alert">
+			Your changes were saved.
+		</div>
+		{% endif %}
+		{% if form.errors %}
+		<div class="alert alert-danger" role="alert">
+			Please correct one or more errors below.
+		</div>
+		{% endif %}
+		<form method="post">
+			{% csrf_token %}
+			{{ form|crispy }}
+			<button type="submit" class="btn btn-primary">Save changes</button>		
+		</form>
+	</div>
+	<div class="col-sm-4 col-border">
+		<h4>Authentication</h4>
+		<br />
+		<p>Last login: {{ last_login }}</p>
+		<p><a href="{% url 'password_change' %}">Change password &gt;</a></p>
+		<p><a href="{% url 'website:deleteaccount' %}">Delete my account &gt;</a></p>
+	</div>
+</div>
+
+{% endblock %}

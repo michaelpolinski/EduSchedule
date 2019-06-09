@@ -1,0 +1,22 @@
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+#====================================================#
+# These are DEBUG settings. Don't use in production! #
+#====================================================#
+
+SECRET_KEY = 'PUT_SECRET_KEY_HERE'
+DEBUG = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'staticfiles/')

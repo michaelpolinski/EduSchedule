@@ -1,0 +1,28 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}Settings{% endblock %}</h3>
+<hr />
+<div class="row">
+	<div class="col-sm-8">
+		{% if success %}
+		<div class="alert alert-success" role="alert">
+			Your changes were saved.
+		</div>
+		{% endif %}
+		{% if form.errors %}
+		<div class="alert alert-danger" role="alert">
+			Please correct one or more errors below.
+		</div>
+		{% endif %}
+		<form method="post">
+			{% crispy form %}
+		</form>
+	</div>
+</div>
+
+{% endblock %}

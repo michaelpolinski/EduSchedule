@@ -1,0 +1,218 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% compress css file %}
+<link rel="stylesheet" href="{% static "website/css/bootstrap-datetimepicker.css" %}" type="text/css">
+<style type="text/css">
+.invalid-feedback {
+	display:block;
+}
+</style>
+<style type="text/css">
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('{% static 'website/fonts/glyphicons-halflings-regular.eot'%}') format('embedded-opentype'),
+     url('{% static 'website/fonts/glyphicons-halflings-regular.woff2'%}') format('woff2'),
+     url('{% static 'website/fonts/glyphicons-halflings-regular.woff'%}') format('woff'),
+     url('{% static 'website/fonts/glyphicons-halflings-regular.ttf'%}') format('truetype'),
+     url('{% static 'website/fonts/glyphicons-halflings-regular.svg'%}') format('svg');
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-time:before {
+    content: "\e023";
+}
+
+.glyphicon-chevron-left:before {
+    content: "\e079";
+}
+
+.glyphicon-chevron-right:before {
+    content: "\e080";
+}
+
+.glyphicon-chevron-up:before {
+    content: "\e113";
+}
+
+.glyphicon-chevron-down:before {
+    content: "\e114";
+}
+
+.glyphicon-calendar:before {
+    content: "\e109";
+}
+
+.glyphicon-screenshot:before {
+    content: "\e087";
+}
+
+.glyphicon-trash:before {
+    content: "\e020";
+}
+
+.glyphicon-remove:before {
+    content: "\e014";
+}
+
+.bootstrap-datetimepicker-widget .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    position: absolute;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+.bootstrap-datetimepicker-widget .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+.bootstrap-datetimepicker-widget .collapse {
+    display: none;
+}
+
+.bootstrap-datetimepicker-widget .collapse.in {
+    display: block;
+}
+
+/* fix for bootstrap4 */
+.bootstrap-datetimepicker-widget .table-condensed > thead > tr > th,
+.bootstrap-datetimepicker-widget .table-condensed > tbody > tr > td,
+.bootstrap-datetimepicker-widget .table-condensed > tfoot > tr > td {
+    padding: 5px;
+}
+</style>
+{% endcompress %}
+{% compress js file %}
+<script src="{% static "website/js/moment-with-locales.min.js" %}"></script>
+<script src="{% static "website/js/bootstrap-datetimepicker.min.js" %}"></script>
+<script src="{% static "bootstrap_datepicker_plus/js/datepicker-widget.js" %}"></script>
+{% endcompress %}
+
+<h3>{% block title %}Edit appointment{% endblock %}</h3>
+<hr />
+<p>Editing appointment with <b>{% if usertype == 1 %}{{ appointment.student }}{% else %}{{ appointment.teacher }}{% endif %}</b> for {{ appointment.startTime|date:"D n/d/Y" }}, {{ appointment.startTime|time:"g:i A" }} to {{ appointment.endTime|time:"g:i A" }}</p>
+{% if usertype == 2 %}<p>Location: <strong>{{ appointment.location }}</strong></p>{% endif %}
+{% if appointment.cancelled %}
+<div class="alert alert-danger" role="alert">
+	This appointment is cancelled.
+</div>
+{% else %}
+	{% if usertype == 1 and not appointment.teacherConfirmed or usertype == 2 and not appointment.studentConfirmed %}
+	<form action="{% url 'website:appointmentapprove' appointment.pk %}" method="post">
+	{% csrf_token %}
+	<div class="alert alert-warning" role="alert">
+		You have not yet confirmed the details of this appointment. <button type="submit" class="btn btn-link alert-link">Confirm now</button>
+	</div>
+	</form>
+	{% endif %}
+	{% if usertype == 1 %}{% if appointment.teacherConfirmed %}{% if appointment.studentConfirmed %}
+	<div class="alert alert-success" role="alert">
+	This appointment is confirmed.
+	</div>
+	{% else %}
+	<div class="alert alert-warning" role="alert">
+	Pending - {{ appointment.student }} has not yet confirmed this appointment.
+	</div>
+	{% endif %}{% endif %}{% else %}{% if appointment.studentConfirmed %}{% if appointment.teacherConfirmed %}
+	<div class="alert alert-success" role="alert">
+	This appointment is confirmed.
+	</div>
+	{% else %}
+	<div class="alert alert-warning" role="alert">
+	Pending - {{ appointment.teacher }} has not yet confirmed this appointment.
+	</div>
+	{% endif %}{% endif %}{% endif %}
+	{% if usertype == 1 %}
+		{% if appointment.previousStartTime and not appointment.teacherConfirmed %}
+		<div class="alert alert-info" role="alert">
+			{{ appointment.student }} changed the time of the appointment.
+		</div>
+		{% endif %}
+	{% else %}
+		{% if appointment.previousStartTime and not appointment.studentConfirmed %}
+		<div class="alert alert-info" role="alert">
+			{{ appointment.teacher }} changed the time of the appointment.
+		</div>
+		{% endif %}
+	{% endif %}
+	{% if usertype == 2 and not appointment.studentConfirmed and appointment.previousLocation %}
+	<div class="alert alert-info" role="alert">
+		{{ appointment.teacher }} changed the location of the appointment.
+	</div>
+	{% endif %}
+{% endif %}
+<form method="post">
+	{% crispy form %}
+</form>
+<br />
+<hr />
+{% for c in comments %}
+<div class="card text-white bg-{% if user == c.user %}primary{% else %}secondary{% endif %}">
+	<div class="card-header">
+		{% if user == c.user %}{{ c.user }}{% else %}{% if usertype == 1 %}{{ c.appointment.student }}{% else %}{{ c.appointment.teacher }}{% endif %}{% endif %}
+	</div>
+	<div class="card-body">
+		{{ c.message }}
+	</div>
+</div>
+<br />
+{% endfor %}
+<form method="post" action="{% url 'website:appointmentcomment' appointment.pk %}">
+	{% crispy commentform %}
+</form>
+
+{% endblock %}

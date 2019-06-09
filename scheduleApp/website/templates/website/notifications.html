@@ -1,0 +1,84 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% compress css inline %}
+<style type="text/css">
+.clear-form {
+	margin-bottom: 0px;
+}
+</style>
+{% endcompress %}
+
+<h3>{% block title %}Notifications{% endblock %}</h3>
+<hr />
+<div class="row">
+	<div class="col-sm-8">
+	{% if notifications %}
+		{% for n in notifications %}
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-6 col-border">
+							<h5><strong>{{ n.notification_title }}</strong></h5>
+							{{ n.notification_text }}
+						</div>
+						<div class="col-6 col-border text-right">
+							{% if usertype == 0 %}
+								<form action="{% url 'website:myinstitutionapprove' n.target_user.pk %}" method="post">
+								{% csrf_token %}
+								<div class="btn-group" role="group" aria-label="Action buttons">
+									<button type="submit" class="btn btn-{% if n.target_user.isEmailConfirmed %}success{% else %}secondary disabled{% endif %}">Approve</button>
+									<a href="{% url 'website:myinstitutionedit' n.target_user.pk %}" class="btn btn-primary">Edit user</a>
+			 						<a href="{% url 'website:myinstitutiondelete' n.target_user.pk %}" class="btn btn-danger">Delete user</a>
+								</div>
+			  					</form>
+		  					{% else %}
+								<div class="btn-group" role="group" aria-label="Action buttons">
+									<a href="{% url 'website:appointmentedit' n.appointment.pk %}" class="btn btn-primary">Details</a>
+			 						<a href="{% url 'website:appointmentcancel' n.appointment.pk %}" class="btn btn-danger">Cancel</a>
+								</div>
+		  					{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="card-footer">
+					<div class="row">
+					<div class="col-6">
+						{{ n.datetime|naturaltime }}
+					</div>
+					<div class="col-6 text-right">
+						<form action="{% url 'website:deletenotification' n.pk %}" method="post" class="clear-form">
+							{% csrf_token %}
+							<button type="submit" class="btn btn-outline-danger btn-sm">Clear</button>
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+			<br />
+		{% endfor %}
+	{% else %}
+	<p>No notifications to display.</p>
+	{% endif %}
+	</div>
+	<div class="col-sm-4">
+		{% if not older == 0 %}
+			<p>{{ older }} older notification{% if older == 1 %} is{% else %}s are{% endif %} not shown.</p>
+		{% endif %}
+		{% if success %}
+		<div class="alert alert-success" role="alert">
+			All notifications have been deleted.
+		</div>
+		{% endif %}
+		<form method="post">
+			{% crispy form %}	
+		</form>
+	</div>
+</div>
+
+{% endblock %}

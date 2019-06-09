@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<meta name="description" content="{% block desc %}{% endblock %}">
+{% load compress %}
+{% load static %}
+{% compress css file %}
+<link rel="stylesheet" href="{% static "website/css/bootstrap.min.css" %}" type="text/css">
+<style type="text/css">
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+body {
+	padding-top: 56px;
+	padding-bottom: 40px;
+}
+/* show the collapse when navbar toggle is checked */
+#navbar-toggle-cbox:checked ~ .collapse {
+    display: block;
+}
+/* the checkbox used only internally; don't display it */
+#navbar-toggle-cbox {
+  display:none
+}
+.navbar-toggler {
+	margin-bottom: 0px
+}
+.nav-item > a {
+	color:white !important;
+	margin-top: 2px;
+}
+.nav-item:hover > a {
+	border-bottom: 4px solid white;
+	transition: all 0.2s ease;
+}
+.nav-item > a {
+	border-bottom: 4px solid transparent;
+}
+.nav-item.active > a {
+	border-bottom: 4px solid #007bff;
+}
+ul.navbar-nav > li.nav-item {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.noise {
+	background-image: url("{% static "website/img/noise.png" %}")
+}
+.navbar-toggler-icon {
+	background-image: url("{% static "website/img/menu.svg" %}") !important;
+}
+@media (min-width: 992px) {
+    .col-border:not(:last-child) {
+        border-right: 1px solid #d7d7d7;
+    }
+    .col-border + .col-border {
+        border-left: 1px solid #d7d7d7;
+        margin-left: -1px;
+    }
+}
+</style>
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+</style>
+{% endcompress %}
+{% compress js file %}
+<script src="{% static "website/js/jquery.min.js" %}"></script>
+<script src="{% static "website/js/popper.min.js" %}"></script>
+<script src="{% static "website/js/bootstrap.min.js" %}"></script>
+{% endcompress %}
+<title>{% block title %}EduSchedule{% endblock %}</title>
+</head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="{% url 'EduScheduleSite:home' %}">
+  <img src="{% static "website/img/logo.svg" %}" width="30" height="30" class="d-inline-block align-top" alt=""> EduSchedule
+  </a>
+  <input type="checkbox" id="navbar-toggle-cbox">
+  <label for="navbar-toggle-cbox" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </label>
+  <div class="collapse navbar-collapse" id="navbar">
+    <ul class="navbar-nav mr-auto">
+    {% url 'EduScheduleSite:home' as home %}
+    {% url 'EduScheduleSite:about' as about %}
+    {% url 'EduScheduleSite:contact' as contact %}
+    {% url 'EduScheduleSite:terms' as terms %}
+      <li class="nav-item{% if request.path == home %} active{% endif%}">
+        <a class="nav-link" href="{{ home }}">Home</a>
+      </li>
+      <li class="nav-item{% if about in request.path %} active{% endif%}">
+        <a class="nav-link" href="{{ about }}">About</a>
+      </li>
+      <li class="nav-item{% if contact in request.path %} active{% endif%}">
+        <a class="nav-link" href="{{ contact }}">Contact</a>
+      </li>
+      <li class="nav-item{% if terms in request.path %} active{% endif%}">
+        <a class="nav-link" href="{{ terms }}">Terms of service</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+  		<li class="ml-auto">
+  			<a href="{% url 'website:homepage' %}" class="btn btn-outline-light">EduSchedule web app</a>
+  		</li>
+  	</ul>
+  </div>
+</nav>
+<main role="main">
+{% block content %}
+{% endblock %}
+<div class="container">
+<hr />
+</div>
+</main>
+<footer class="container">
+  <p><img src="{% static "website/img/logo.svg" %}" width="24" height="24" class="d-inline-block align-top" alt=""> EduSchedule &copy; 2018-2019 | <a href="{% url 'EduScheduleSite:terms' %}">Terms of service</a></p>
+</footer>
+</html>

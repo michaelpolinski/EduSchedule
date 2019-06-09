@@ -1,0 +1,24 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<h3>{% block title %}Delete Account{% endblock %}</h3>
+<hr />
+{% if not admin %}
+<div class="alert alert-danger" role="alert">
+	<p><strong>Heads up!</strong> Deleting your account will permanently remove all data associated with your account.</p>
+	<p>If you would like to continue, confirm your password below.</p>
+</div>
+<form method="post">
+	{% crispy form %}
+</form>
+{% else %}
+	<p>You are a school administrator, and cannot delete your account on your own.</p>
+	<p>Please contact a server administrator and request that your institution and your account be deleted.</p>
+{% endif %}
+
+{% endblock %}

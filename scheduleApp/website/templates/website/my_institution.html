@@ -1,0 +1,154 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}My Institution{% endblock %}</h3>
+<hr />
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header">
+			Institution info
+			</div>
+			<div class="card-body">
+			<h4 class="card-title">{{ institution.name }}</h4>
+			<p>{{ institution.streetAddress }}<br />
+			{{ institution.cityState }} {{ institution.zipcode }}</p>
+			</div>
+		</div>
+		<br />
+	</div>
+	<div class="col-md-6">
+		{% if not institution.isVerified %}
+		<div class="alert alert-warning" role="alert">
+			<strong>Attention!</strong> Your institution is not yet verified by the server administrator. 
+			Students and teachers <strong>will not</strong> be able to register on EduSchedule with your institution.
+			Additional confirmation of your identity may be required to complete the verification process.
+		</div>
+		{% endif %}
+	</div>
+</div>
+<br />
+{% if message %}
+<div class="alert alert-success" role="alert">
+	{% if message == 'edit_success' %}
+	Your changes were saved.
+	{% endif %}
+	{% if message == 'delete_success' %}
+	The user account was deleted.
+	{% endif %}
+	{% if message == 'approve_success' %}
+	This teacher was approved and can now begin scheduling appointments.
+	{% endif %}
+</div>
+{% endif %}
+<br />
+<div class="row">
+	<div class="col-md-4">
+		<h4>User list</h4>
+	</div>
+	<div class="col-md-8">
+		<div class="text-right">
+		Filter by:
+		<span class="btn-group">
+			{% url 'website:myinstitution' as url_myinst %}
+			{% url 'website:myinstitutionstudents' as url_students %}
+		  	{% url 'website:myinstitutionteachers' as url_teachers %}
+		    {% url 'website:myinstitutionunapproved' as url_unapproved %}
+		  <a href="{{ url_myinst }}" class="btn btn-secondary{% if url_students not in request.path and url_teachers not in request.path and url_unapproved not in request.path %} active{% endif %}">All users</a>
+		  <a href="{{ url_students }}" class="btn btn-secondary{% if url_students in request.path %} active{% endif %}">Students</a>
+		  <a href="{{ url_teachers }}" class="btn btn-secondary{% if url_teachers in request.path %} active{% endif %}">Approved teachers</a>
+		  <a href="{{ url_unapproved }}" class="btn btn-secondary{% if url_unapproved in request.path %} active{% endif %}">Unapproved teachers</a>
+		</span>
+		</div>
+	</div>
+</div>
+<hr />
+<br />
+{% if not single_column_view %}
+<div class="row">
+	<div class="col-md-4 col-border">
+	{% endif %}
+		{% if students or not single_column_view %}
+		<br />		
+		<h4>Students</h4>
+		<br />		
+		{% endif %}
+		{% for student in students %}
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">{{ student }}</h5>
+					<p>
+					{{ student.email }}{% if not student.isEmailConfirmed %} <span class="badge badge-warning">Unconfirmed</span>{% endif %}
+					{% if not student.is_active %}<br /><span class="text-danger">Account disabled</span>{% endif %}
+					</p>
+					<div class="btn-group{% if not single_column_view %} container-fluid{% endif %}" role="group" aria-label="Action buttons">
+  						<a href="{% url 'website:myinstitutionedit' student.pk %}" class="btn btn-primary">Edit user</a>
+ 						<a href="{% url 'website:myinstitutiondelete' student.pk %}" class="btn btn-danger">Delete user</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% if not single_column_view %}
+	</div>
+	<div class="col-md-4 col-border">
+	{% endif %}
+		{% if approved_teachers or not single_column_view %}
+		<br />		
+		<h4>Teachers</h4>
+		<br />		
+		{% endif %}
+		{% for teacher in approved_teachers %}
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">{{ teacher }}</h5>
+					<p>
+					{{ teacher.email }}{% if not teacher.isEmailConfirmed %} <span class="badge badge-warning">Unconfirmed</span>{% endif %}
+					<br /><span class="text-success">Approved</span>
+					{% if not teacher.is_active %}<br /><span class="text-danger">Account disabled</span>{% endif %}
+					</p>
+					<div class="btn-group{% if not single_column_view %} container-fluid{% endif %}" role="group" aria-label="Action buttons">
+  						<a href="{% url 'website:myinstitutionedit' teacher.pk %}" class="btn btn-primary">Edit user</a>
+ 						<a href="{% url 'website:myinstitutiondelete' teacher.pk %}" class="btn btn-danger">Delete user</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% if not single_column_view %}
+	</div>
+	<div class="col-md-4 col-border">
+	{% endif %}
+		{% if unapproved_teachers or not single_column_view %}
+		<br />
+		<h4>Unapproved Teachers</h4>
+		<br />		
+		{% endif %}
+		{% for teacher in unapproved_teachers %}
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">{{ teacher }}</h5>
+					<p>
+					{{ teacher.email }}{% if not teacher.isEmailConfirmed %} <span class="badge badge-warning">Unconfirmed</span>{% endif %}
+					<br /><span class="text-warning">{% if teacher.isEmailConfirmed %}Unpproved{% else %}Can't approve - email unconfirmed{% endif %}</span>
+					{% if not teacher.is_active %}<br /><span class="text-danger">Account disabled</span>{% endif %}
+					</p>
+					<form action="{% url 'website:myinstitutionapprove' teacher.pk %}" method="post">
+					{% csrf_token %}
+					<div class="btn-group{% if not single_column_view %} container-fluid{% endif %}" role="group" aria-label="Action buttons">
+						<button type="submit" class="btn btn-{% if teacher.isEmailConfirmed %}success{% else %}secondary disabled{% endif %}">Approve</button>
+						<a href="{% url 'website:myinstitutionedit' teacher.pk %}" class="btn btn-primary">Edit user</a>
+ 						<a href="{% url 'website:myinstitutiondelete' teacher.pk %}" class="btn btn-danger">Delete user</a>
+					</div>
+  					</form>
+				</div>
+			</div>
+		{% endfor %}
+	{% if not single_column_view %}
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}

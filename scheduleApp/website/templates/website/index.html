@@ -1,0 +1,41 @@
+{% extends "website/base.html" %}
+{% load compress %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>{% block title %}Home{% endblock %}</h3>
+<hr />
+{% if user.is_authenticated %}
+<div class="row">
+	<div class="col-sm-8 col-border">
+		<p>{{ user.first_name }}, welcome to EduSchedule for {{ institution }} on {{ domain }}.</p>
+	</div>
+	<div class="col-sm-4 col-border">
+		<center>
+		<a href="{% url 'website:notifications' %}" class="btn btn-light">
+  			Notifications <span class="badge badge-dark">{{ notifications }}</span>
+		</a>
+		</center>
+	</div>
+</div>
+
+
+</p>
+{% else %}
+<p>Welcome to the EduSchedule web app on {{ domain }}.</p>
+<p>Please <a href="{% url 'login' %}">sign in</a> or <a href="{% url 'website:registerredirect' %}">create an account</a> to get started.</p>
+<br />
+<p>Are you a school administrator? Create an account and register your school for EduSchedule <a href="{% url 'website:registeradmin' %}">here</a>.</p>
+<br />
+<p><a href={% url 'EduScheduleSite:home' %}>Learn more</a> about EduSchedule and the service we offer.</p>
+{% endif %}
+<div class="row">
+	<div class="col-sm-8 col-border">
+	</div>
+	<div class="col-sm-4 col-border">
+	</div>
+</div>
+
+{% endblock %}
