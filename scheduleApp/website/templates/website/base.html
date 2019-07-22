@@ -1,11 +1,12 @@
+{% spaceless %}
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% load compress %}
 {% load static %}
-{% compress css file %}
 <link rel="stylesheet" href="{% static "website/css/bootstrap.min.css" %}" type="text/css">
+{% compress css file %}
 <style type="text/css">
 .dropdown:hover .dropdown-menu {
     display: block;
@@ -59,11 +60,9 @@ ul.navbar-nav > li.nav-item {
 }
 </style>
 {% endcompress %}
-{% compress js file %}
 <script src="{% static "website/js/jquery.min.js" %}"></script>
 <script src="{% static "website/js/popper.min.js" %}"></script>
 <script src="{% static "website/js/bootstrap.min.js" %}"></script>
-{% endcompress %}
 <title>{% block title %}Home{% endblock %} - EduSchedule</title>
 </head>
 <body>
@@ -122,12 +121,12 @@ ul.navbar-nav > li.nav-item {
   {% if user.is_authenticated %}
   	<li class="ml-auto">
   	{% url 'website:myaccount' as myacct %}
-  	<a href="{{ myacct }}" class="btn btn-{% if myacct in request.path %}primary{% else %}outline-light{% endif %}">My account</a>
+  	<a href="{{ myacct }}" class="btn btn-{% if myacct in request.path %}primary{% else %}outline-light{% endif %}">My account</a>&nbsp;
   	<a href="{% url 'logout' %}" class="btn btn-outline-light">Log out</a>
   	</li>
     {% else %}
     <li class="ml-auto">
-    <a href="{% url 'login' %}" class="btn btn-outline-light">Sign in</a>
+    <a href="{% url 'login' %}" class="btn btn-outline-light">Sign in</a>&nbsp;
     <a href="{% url 'website:registerredirect' %}" class="btn btn-outline-light">Create account</a>
     </li>
     {% endif %}
@@ -140,3 +139,4 @@ ul.navbar-nav > li.nav-item {
 </main>
 </body>
 </html>
+{% endspaceless %}

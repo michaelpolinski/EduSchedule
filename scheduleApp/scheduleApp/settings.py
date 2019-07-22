@@ -126,9 +126,9 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-# COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter', 'compressor.filters.cssmin.rCSSMinFilter']
+COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter', 'compressor.filters.cssmin.rCSSMinFilter']
 # COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.rJSMinFilter']
-COMPRESS_ENABLED = False
+COMPRESS_ENABLED = not DEBUG
 
 AUTH_USER_MODEL = 'website.User'
 

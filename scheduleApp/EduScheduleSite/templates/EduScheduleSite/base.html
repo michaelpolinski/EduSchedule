@@ -1,3 +1,4 @@
+{% spaceless %}
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
@@ -6,8 +7,8 @@
 <meta name="description" content="{% block desc %}{% endblock %}">
 {% load compress %}
 {% load static %}
-{% compress css file %}
 <link rel="stylesheet" href="{% static "website/css/bootstrap.min.css" %}" type="text/css">
+{% compress css file %}
 <style type="text/css">
 .dropdown:hover .dropdown-menu {
     display: block;
@@ -77,11 +78,9 @@ ul.navbar-nav > li.nav-item {
   }
 </style>
 {% endcompress %}
-{% compress js file %}
 <script src="{% static "website/js/jquery.min.js" %}"></script>
 <script src="{% static "website/js/popper.min.js" %}"></script>
 <script src="{% static "website/js/bootstrap.min.js" %}"></script>
-{% endcompress %}
 <title>{% block title %}EduSchedule{% endblock %}</title>
 </head>
   <body>
@@ -130,3 +129,4 @@ ul.navbar-nav > li.nav-item {
   <p><img src="{% static "website/img/logo.svg" %}" width="24" height="24" class="d-inline-block align-top" alt=""> EduSchedule &copy; 2018-2019 | <a href="{% url 'EduScheduleSite:terms' %}">Terms of service</a></p>
 </footer>
 </html>
+{% endspaceless %}

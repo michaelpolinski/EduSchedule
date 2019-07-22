@@ -1,7 +1,6 @@
-from copy import copy
 from datetime import datetime, timedelta
-from logging import _startTime
 
+from copy import copy
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
@@ -16,8 +15,8 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
+from logging import _startTime
 from ratelimit.decorators import ratelimit
-
 from website.forms import DeleteAccountForm, MyInstitutionUserEditForm, \
     MyInstitutionUserDeleteForm, AppointmentCancelForm, AppointmentEditForm, \
     AppointmentCommentForm, FindTeacherForm, NewAppointmentForm
@@ -321,7 +320,7 @@ def MyInstitutionUserApproveView(request, pk):
         if not usertype == 0:
             raise Http404()
         institution = user.institution
-        target_user = User.objects.get(pk = pk, institution = institution, userType = 1, isTeacherApprovedByAdministrator = False)
+        target_user = User.objects.get(pk = pk, institution = institution, userType = 1, isTeacherApprovedByAdministrator = False, isEmailConfirmed = True)
         if target_user is not None:
             target_user.isTeacherApprovedByAdministrator = True
             target_user.save()

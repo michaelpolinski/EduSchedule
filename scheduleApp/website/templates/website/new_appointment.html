@@ -135,11 +135,9 @@
 }
 </style>
 {% endcompress %}
-{% compress js file %}
 <script src="{% static "website/js/moment-with-locales.min.js" %}"></script>
 <script src="{% static "website/js/bootstrap-datetimepicker.min.js" %}"></script>
 <script src="{% static "bootstrap_datepicker_plus/js/datepicker-widget.js" %}"></script>
-{% endcompress %}
 
 <h3>{% block title %}New appointment{% endblock %}</h3>
 <hr />

@@ -132,17 +132,21 @@
 					<h5 class="card-title">{{ teacher }}</h5>
 					<p>
 					{{ teacher.email }}{% if not teacher.isEmailConfirmed %} <span class="badge badge-warning">Unconfirmed</span>{% endif %}
-					<br /><span class="text-warning">{% if teacher.isEmailConfirmed %}Unpproved{% else %}Can't approve - email unconfirmed{% endif %}</span>
+					<br /><span class="text-warning">{% if teacher.isEmailConfirmed %}Unapproved{% else %}Can't approve - email unconfirmed{% endif %}</span>
 					{% if not teacher.is_active %}<br /><span class="text-danger">Account disabled</span>{% endif %}
 					</p>
+					{% if teacher.isEmailConfirmed %}
 					<form action="{% url 'website:myinstitutionapprove' teacher.pk %}" method="post">
 					{% csrf_token %}
+					{% endif %}
 					<div class="btn-group{% if not single_column_view %} container-fluid{% endif %}" role="group" aria-label="Action buttons">
-						<button type="submit" class="btn btn-{% if teacher.isEmailConfirmed %}success{% else %}secondary disabled{% endif %}">Approve</button>
+						{% if teacher.isEmailConfirmed %}<button type="submit" class="btn btn-success">Approve</button>{% endif %}
 						<a href="{% url 'website:myinstitutionedit' teacher.pk %}" class="btn btn-primary">Edit user</a>
  						<a href="{% url 'website:myinstitutiondelete' teacher.pk %}" class="btn btn-danger">Delete user</a>
 					</div>
+					{% if teacher.isEmailConfirmed %}
   					</form>
+  					{% endif %}
 				</div>
 			</div>
 		{% endfor %}
