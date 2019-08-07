@@ -1,7 +1,7 @@
 from cuser.admin import UserAdmin
-from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy as _
+from ratelimitbackend import admin
 
 from .models import User, Appointment, Comment, Institution, AppointmentNotification, UserNotification
 

@@ -17,7 +17,6 @@ from django.contrib import sitemaps
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 from django.urls import reverse
-from ratelimitbackend import admin
 
 from website.admin import custom_admin_site
 
