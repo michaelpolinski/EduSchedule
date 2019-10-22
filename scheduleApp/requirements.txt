@@ -12,7 +12,7 @@ django-referrer-policy==1.0
 django-simple-captcha==0.5.11
 django-timezone-field==3.0
 django-username-email==2.2.4
-Pillow==6.1.0
+Pillow==6.2.0
 pytz==2019.1
 rcssmin==1.0.6
 rjsmin==1.1.0
