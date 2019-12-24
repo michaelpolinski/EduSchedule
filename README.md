@@ -1,8 +1,6 @@
 # EduSchedule
 a simple and modern web app that helps students and teachers manage appointments efficiently
 
-available at <https://eduschedule.org>
-
 ## Getting Started
 Follow these instructions to set up a copy of the project for testing and development.
 
@@ -79,7 +77,7 @@ Ensure that the virtual environment is activated when executing Django manage.py
 This section explains how to run EduSchedule on your own server.
 
 ### Overview
-Running EduSchedule in production requires a publicly-accessible server that has the ability to run Django, has access to a production database, and can send email. It is highly recommended to run EduSchedule on a Linux server or VPS where root shell access (or SSH access) is permitted. The official EduSchedule website is on a VPS running Ubuntu.
+Running EduSchedule in production requires a publicly-accessible server that has the ability to run Django, has access to a production database, and can send email. It is highly recommended to run EduSchedule on a Linux server or VPS where root shell access (or SSH access) is permitted. 
 
 A typical configuration would include the following software:
 + NGINX (web server, to handle web traffic from clients and serve static files)
