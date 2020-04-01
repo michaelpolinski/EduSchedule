@@ -1,3 +1,6 @@
+**Heads up: EduSchedule isn't actively maintained any longer, aside from occasional dependency updates in `requirements.txt`.**
+---
+
 # EduSchedule
 a simple and modern web app that helps students and teachers manage appointments efficiently
 
